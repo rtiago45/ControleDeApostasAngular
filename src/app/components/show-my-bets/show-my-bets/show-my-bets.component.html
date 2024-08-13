@@ -47,16 +47,31 @@
         <!-- Cards de Apostas -->
         <div id="bets" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div *ngFor="let bet of bets" class="bg-white shadow-md rounded-lg p-4">
-            <h2 class="text-lg font-bold mb-2">Aposta #{{ bet.id }}</h2>
-            <p class="mb-2"><strong>Times:</strong> {{ bet.game.teams.join(' vs ') }}</p>
-            <p class="mb-2"><strong>Campeonato:</strong> {{ bet.game.competition }}</p>
-            <p class="mb-2"><strong>Valor:</strong> R$ {{ bet.value }}</p>
-            <p class="mb-2"><strong>Odd:</strong> {{ bet.odd }}</p>
-            <p class="mb-2"><strong>Estilo de Aposta:</strong> {{ bet.betStyle }}</p>
-            <p class="mb-2"><strong>Resultado:</strong> <span [ngClass]="bet.green ? 'text-green-600' : 'text-red-600'">{{ bet.green ? 'Green' : 'Red' }}</span></p>
-            <p class="mb-2"><strong>Entradas:</strong> {{ getEntrancesDescriptions(bet) }}</p>
+              <h2 class="text-lg font-bold mb-2">Aposta #{{ bet.id || 'N/A' }}</h2>
+
+              <!-- Safe Navigation and Conditional Rendering -->
+              <p class="mb-2"><strong>Times:</strong>
+                  {{ bet.game?.teams?.length ? bet.game.teams.join(' vs ') : 'N/A' }}
+              </p>
+              <p class="mb-2"><strong>Campeonato:</strong>
+                  {{ bet.game?.competition || 'N/A' }}
+              </p>
+
+              <p class="mb-2"><strong>Valor:</strong> R$ {{ bet.value || 0 }}</p>
+              <p class="mb-2"><strong>Odd:</strong> {{ bet.odd || 0 }}</p>
+              <p class="mb-2"><strong>Estilo de Aposta:</strong> {{ bet.betStyle || 'N/A' }}</p>
+              <p class="mb-2"><strong>Resultado:</strong>
+                  <span [ngClass]="bet.green ? 'text-green-600' : 'text-red-600'">
+                      {{ bet.green ? 'Green' : 'Red' }}
+                  </span>
+              </p>
+
+              <!-- Safe check for Entrances -->
+              <p class="mb-2"><strong>Entradas:</strong>
+                  {{ getEntrancesDescriptions(bet) || 'N/A' }}
+              </p>
           </div>
-        </div>
+      </div>
 
         <button (click)="navigateToHomePage()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           Voltar

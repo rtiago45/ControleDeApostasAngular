@@ -1,3 +1,5 @@
+import { PersonService } from './../../../services/person.service';
+import { Person } from '../../../models/person.model'; // Import the Person model
 import { Bet } from './../../../models/bet.model';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -7,7 +9,6 @@ import { TeamService } from '../../../services/team.service';
 import { Router } from '@angular/router';
 import { Game } from '../../../models/game.model';
 import { OneEntranceDetail } from '../../../models/entrance.model';
-
 
 @Component({
   selector: 'app-home',
@@ -25,15 +26,20 @@ export class HomeComponent implements OnInit {
   multipleOrSimple: string[] = ['Multipla', 'Simples'];
   betStyles: string[] = ['Aposta Multipla', 'Aposta Simples'];
   showCreateBetForm: boolean = false;
+  showPersonInfo = false;
   competitionFilter: string = '';
   resultFilter: string = '';
   dateStart: string = '';
   dateEnd: string = '';
+  showFullInfo: boolean = false;
+  personId: string = '1'; // Define personId, assuming you are using "1" as the default ID
+  person: Person | undefined; // Define person property to store the retrieved data
 
   constructor(
     private betService: BetService,
     private teamService: TeamService,
-    private router: Router
+    private router: Router,
+    private personService: PersonService // Inject the PersonService
   ) {
     this.newBet = new Bet(
       '', // id
@@ -51,6 +57,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.betStyles = this.teamService.getBetStyles();
+    this.personService.getPersonById(this.personId).subscribe((data: Person) => {
+      this.person = data;
+    });
   }
 
   onCompetitionChange(event: Event): void {
@@ -65,6 +74,14 @@ export class HomeComponent implements OnInit {
       this.newBet.game.entrances.push(new OneEntranceDetail(this.newEntrance));
       this.newEntrance = '';
     }
+  }
+
+  loadPersonInfo(): void {
+    this.showFullInfo = true;
+    // Optionally refetch the person data if needed, otherwise just set showFullInfo to true
+    this.personService.getPersonById(this.personId).subscribe((data: Person) => {
+      this.person = data;
+    });
   }
 
   addBet(): void {

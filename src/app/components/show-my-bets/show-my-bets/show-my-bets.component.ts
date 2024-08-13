@@ -50,8 +50,10 @@ export class ShowMyBetsComponent implements OnInit {
     });
   }
   getEntrancesDescriptions(bet: Bet): string {
-    return bet.game.entrances.map((e) => {
-      return e.multipleOrSimple;
-    }).join(', ');
+    if (!bet.game || !bet.game.entrances || bet.game.entrances.length === 0) {
+        return 'N/A';
+    }
+    return bet.game.entrances.map((e) => e.multipleOrSimple || 'N/A').join(', ');
   }
+
 }

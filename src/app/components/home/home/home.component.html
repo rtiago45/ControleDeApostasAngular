@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teste</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-black text-white p-4">
     <div class="flex">
         <!-- Sidebar -->
@@ -25,9 +27,25 @@
                 <h2 class="text-lg font-bold mb-2">Bem vindo de volta</h2>
             </div>
 
-            <div>
-                <h2 class="text-lg font-bold mb-2">Seu saldo atual é:</h2>
+            <div *ngIf="person">
+                <h2 class="text-lg font-bold mb-2">Seu saldo atual é: {{ person.saldoAtual | currency }}</h2>
             </div>
+
+            <!-- Button to display Person information -->
+            <div class="mb-8 flex space-x-4">
+                <button (click)="loadPersonInfo()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    Mostrar Informações da Pessoa
+                </button>
+            </div>
+
+            <!-- Display full Person information on button click -->
+            <div *ngIf="showFullInfo && person" class="bg-gray-900 shadow-md rounded-lg p-4 mb-4">
+              <h2 class="text-lg font-bold mb-2 text-white">Informações da Pessoa</h2>
+              <p><strong>ID:</strong> {{ person.id }}</p>
+              <p><strong>Saldo Inicial:</strong> {{ person.saldoInicial | currency }}</p>
+              <p><strong>Saldo Atual:</strong> {{ person.saldoAtual | currency }}</p>
+              <p><strong>Estilo de Aposta:</strong> {{ person.estiloDeAposta }}</p>
+          </div>
 
             <!-- Botões para adicionar e listar apostas -->
             <div class="mb-8 flex space-x-4">
@@ -95,7 +113,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" (click)="addEntrance()"  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    <button type="submit" (click)="addEntrance()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                         Adicionar Aposta
                     </button>
                 </form>
@@ -103,5 +121,5 @@
         </div>
     </div>
 </body>
-</html>
 
+</html>
