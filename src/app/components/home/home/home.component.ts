@@ -77,11 +77,13 @@ export class HomeComponent implements OnInit {
   }
 
   loadPersonInfo(): void {
-    this.showFullInfo = true;
-    // Optionally refetch the person data if needed, otherwise just set showFullInfo to true
-    this.personService.getPersonById(this.personId).subscribe((data: Person) => {
-      this.person = data;
-    });
+    this.showFullInfo = !this.showFullInfo;
+    // Optionally refetch the person data if needed, otherwise just toggle showFullInfo
+    if (this.showFullInfo && !this.person) {
+      this.personService.getPersonById(this.personId).subscribe((data: Person) => {
+        this.person = data;
+      });
+    }
   }
 
   addBet(): void {

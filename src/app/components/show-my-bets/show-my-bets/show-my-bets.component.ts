@@ -29,6 +29,7 @@ export class ShowMyBetsComponent implements OnInit {
   //pegar todas as bets
   getBets() {
     this.betService.listAllBets().subscribe((data: Bet[]) => {
+      console.log(data);
       this.bets = data;
     });
   }

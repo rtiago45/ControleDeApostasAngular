@@ -1,125 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="sidebar">
+  <!-- Sidebar -->
+  <div class="sidebar-content">
+      <nav class="nav-links">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/showBets" class="nav-link">Apostas</a>
+          <a href="/personInfo" class="nav-link">Perfil</a>
+      </nav>
+  </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
+  <!-- Main Content -->
+  <div class="main-content">
+      <h1 class="main-title">Seu gerenciador de Apostas</h1>
 
-<body class="bg-black text-white p-4">
-    <div class="flex">
-        <!-- Sidebar -->
-        <div class="w-64 bg-gray-800 p-4">
-            <nav class="flex flex-col space-y-2">
-                <a href="#" class="text-white px-4 py-2 hover:bg-gray-700 rounded">Home</a>
-                <a href="#" class="text-white px-4 py-2 hover:bg-gray-700 rounded">Apostas</a>
-                <a href="#" class="text-white px-4 py-2 hover:bg-gray-700 rounded">Perfil</a>
-            </nav>
-        </div>
+      <div *ngIf="person">
+        <h2 class="subtitle">Bem vindo de volta {{person.name}}</h2>
+      </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 container mx-auto p-4">
-            <h1 class="text-2xl font-bold mb-4">Gerenciador de Apostas</h1>
 
-            <div>
-                <h2 class="text-lg font-bold mb-2">Bem vindo de volta</h2>
-            </div>
+      <div *ngIf="person">
+          <h2 class="subtitle">Seu saldo atual é: {{ person.saldoAtual | currency }}</h2>
+      </div>
 
-            <div *ngIf="person">
-                <h2 class="text-lg font-bold mb-2">Seu saldo atual é: {{ person.saldoAtual | currency }}</h2>
-            </div>
-
-            <!-- Button to display Person information -->
-            <div class="mb-8 flex space-x-4">
-                <button (click)="loadPersonInfo()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                    Mostrar Informações da Pessoa
-                </button>
-            </div>
-
-            <!-- Display full Person information on button click -->
-            <div *ngIf="showFullInfo && person" class="bg-gray-900 shadow-md rounded-lg p-4 mb-4">
-              <h2 class="text-lg font-bold mb-2 text-white">Informações da Pessoa</h2>
-              <p><strong>ID:</strong> {{ person.id }}</p>
-              <p><strong>Saldo Inicial:</strong> {{ person.saldoInicial | currency }}</p>
-              <p><strong>Saldo Atual:</strong> {{ person.saldoAtual | currency }}</p>
-              <p><strong>Estilo de Aposta:</strong> {{ person.estiloDeAposta }}</p>
-          </div>
-
-            <!-- Botões para adicionar e listar apostas -->
-            <div class="mb-8 flex space-x-4">
-                <button (click)="showCreateBetForm = !showCreateBetForm" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                    Adicionar aposta
-                </button>
-
-                <button (click)="navigateToShowBets()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                    Listar apostas
-                </button>
-            </div>
-
-            <!-- Formulário para criar uma aposta -->
-            <div *ngIf="showCreateBetForm" class="bg-gray-900 shadow-md rounded-lg p-4 mb-4">
-                <h2 class="text-lg font-bold mb-2 text-white">Criar Aposta</h2>
-                <form (ngSubmit)="addBet()">
-                    <div class="mb-4">
-                        <label for="competition" class="block text-sm font-medium text-white">Campeonato</label>
-                        <select id="competition" name="competition" (change)="onCompetitionChange($event)" [(ngModel)]="newBet.game.competition" required class="mt-1 block w-full py-2 px-3 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
-                            <option value="">Selecione um Campeonato</option>
-                            <option *ngFor="let competition of competitions" [value]="competition">{{ competition }}</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="team1" class="block text-sm font-medium text-white">Time 1</label>
-                        <select id="team1" name="team1" [(ngModel)]="newBet.game.teams[0]" class="mt-1 block w-full py-2 px-3 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm" required>
-                            <option value="">Selecione um Time</option>
-                            <option *ngFor="let team of availableTeams" [value]="team">{{ team }}</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="team2" class="block text-sm font-medium text-white">Time 2</label>
-                        <select id="team2" name="team2" [(ngModel)]="newBet.game.teams[1]" class="mt-1 block w-full py-2 px-3 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm" required>
-                            <option value="">Selecione um Time</option>
-                            <option *ngFor="let team of availableTeams" [value]="team">{{ team }}</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="value" class="block text-sm font-medium text-white">Valor</label>
-                        <input type="number" id="value" name="value" [(ngModel)]="newBet.value" step="0.01" class="mt-1 block w-full py-2 px-3 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm" required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="odd" class="block text-sm font-medium text-white">Odd</label>
-                        <input type="number" id="odd" name="odd" [(ngModel)]="newBet.odd" step="0.01" class="mt-1 block w-full py-2 px-3 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm" required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="multipleOrSimple" class="block text-sm font-medium text-white">Multipla ou Simples</label>
-                        <select id="multipleOrSimple" name="multipleOrSimple" [(ngModel)]="newEntrance" class="mt-1 block w-full py-2 px-3 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm" required>
-                            <option value="">Selecione uma opção</option>
-                            <option *ngFor="let style of multipleOrSimple" [value]="style">{{ style }}</option>
-                        </select>
-
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="betStyle" class="block text-sm font-medium text-white">Estilo de Aposta</label>
-                        <select id="betStyle" name="betStyle" [(ngModel)]="newBet.betStyle" class="mt-1 block w-full py-2 px-3 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm" required>
-                            <option value="">Selecione um Estilo</option>
-                            <option *ngFor="let style of betStyles" [value]="style">{{ style }}</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" (click)="addEntrance()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                        Adicionar Aposta
-                    </button>
-                </form>
-            </div>
-        </div>
+      <!-- Button to display Person information -->
+      <div class="button-group">
+        <button (click)="loadPersonInfo()" class="btn-primary">
+            {{ showFullInfo ? 'Ocultar Informações da Pessoa' : 'Mostrar Informações da Pessoa' }}
+        </button>
     </div>
-</body>
 
-</html>
+      <!-- Display full Person information on button click -->
+      <div *ngIf="showFullInfo && person" class="person-info-container">
+        <table class="person-info-table">
+          <tr>
+            <td><strong>Nome:  {{ person.name }}</strong></td>
+            <td><strong>Banca Inicial: {{ person.saldoInicial | currency }}</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Banca Atual: {{ person.saldoAtual | currency }}</strong></td>
+            <td><strong>Estilo de Aposta: {{ person.estiloDeAposta }}</strong></td>
+          </tr>
+        </table>
+      </div>
+
+
+      <!-- Buttons to add and list bets -->
+      <div class="button-group">
+          <button (click)="showCreateBetForm = !showCreateBetForm" class="btn-primary">
+              Adicionar aposta
+          </button>
+
+          <button (click)="navigateToShowBets()" class="btn-primary">
+              Listar apostas
+          </button>
+      </div>
+
+      <!-- Form to create a bet -->
+      <div *ngIf="showCreateBetForm" class="form-container">
+          <h2 class="subtitle">Criar Aposta</h2>
+          <form (ngSubmit)="addBet()">
+              <div class="form-group">
+                  <label for="competition">Campeonato</label>
+                  <select id="competition" name="competition" (change)="onCompetitionChange($event)" [(ngModel)]="newBet.game.competition" required>
+                      <option value="">Selecione um Campeonato</option>
+                      <option *ngFor="let competition of competitions" [value]="competition">{{ competition }}</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="team1">Time 1</label>
+                  <select id="team1" name="team1" [(ngModel)]="newBet.game.teams[0]" required>
+                      <option value="">Selecione um Time</option>
+                      <option *ngFor="let team of availableTeams" [value]="team">{{ team }}</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="team2">Time 2</label>
+                  <select id="team2" name="team2" [(ngModel)]="newBet.game.teams[1]" required>
+                      <option value="">Selecione um Time</option>
+                      <option *ngFor="let team of availableTeams" [value]="team">{{ team }}</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="value">Valor</label>
+                  <input type="number" id="value" name="value" [(ngModel)]="newBet.value" step="0.01" required>
+              </div>
+
+              <div class="form-group">
+                  <label for="odd">Odd</label>
+                  <input type="number" id="odd" name="odd" [(ngModel)]="newBet.odd" step="0.01" required>
+              </div>
+
+              <div class="form-group">
+                  <label for="multipleOrSimple">Multipla ou Simples</label>
+                  <select id="multipleOrSimple" name="multipleOrSimple" [(ngModel)]="newEntrance" required>
+                      <option value="">Selecione uma opção</option>
+                      <option *ngFor="let style of multipleOrSimple" [value]="style">{{ style }}</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="betStyle">Estilo de Aposta</label>
+                  <select id="betStyle" name="betStyle" [(ngModel)]="newBet.betStyle" required>
+                      <option value="">Selecione um Estilo</option>
+                      <option *ngFor="let style of betStyles" [value]="style">{{ style }}</option>
+                  </select>
+              </div>
+
+              <button type="submit" (click)="addEntrance()" class="btn-primary">
+                  Adicionar Aposta
+              </button>
+          </form>
+      </div>
+  </div>
+</div>
