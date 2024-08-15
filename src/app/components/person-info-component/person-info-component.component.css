@@ -1,0 +1,115 @@
+
+
+html, body {
+  background: #222 !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  color: white; /* Define a cor do texto padrão como branco */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.main-title {
+  padding-top: 100px;
+  padding-bottom: 100px;
+  font-size: 4rem; /* Tailwind text-2xl */
+  font-weight: bold;
+  margin-bottom: 1rem; /* Tailwind mb-4 */
+  color: #FFD700;
+}
+
+.subtitle {
+  margin-top: 50px;
+  font-size: 40px; /* Tailwind text-lg */
+  font-weight: bold;
+  color: #FFD700;
+  margin-bottom: 0.5rem; /* Tailwind mb-2 */
+}
+
+.person-info {
+  text-align: center;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  background-color: #222; /* Adiciona um fundo vermelho escuro */
+  color: white;
+  font-size: 30px;
+}
+
+.info-header {
+  font-size: 1.125rem; /* Font size similar to Tailwind's text-lg */
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.info-subheader {
+  font-size: 1.125rem; /* Font size similar to Tailwind's text-lg */
+  font-weight: bold;
+  margin-top: 16px;
+  color: white;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.stake-table {
+  width: 100%;
+  max-width: 800px; /* Set a maximum width for better readability */
+  border-collapse: collapse;
+}
+
+.stake-table th, .stake-table td {
+  border: 1px solid white; /* Border color similar to Tailwind's border color */
+  padding: 8px;
+  text-align: center;
+}
+
+.stake-table th {
+  background-color: #c53030; /* Darker background for header */
+  color: white;
+}
+
+.stake-table td {
+  background-color: white; /* Slightly lighter background for rows */
+  color: black;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 15px 30px;
+  border: 1px solid transparent;
+  font-size: 1.5rem; /* Font size similar to Tailwind's text-sm */
+  font-weight: 500;
+  border-radius: 4px;
+  background-color: #e53e3e; /* Indigo background color */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #4338ca; /* Darker indigo on hover */
+}
+
+.back-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(67, 56, 202, 0.5); /* Focus ring */
+}
